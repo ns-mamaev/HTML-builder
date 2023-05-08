@@ -1,6 +1,6 @@
 const { copyFile} = require('fs');
 const path = require('path');
-const { readdir, mkdir } = require('fs/promises');
+const { readdir, mkdir, rm } = require('fs/promises');
 
 const folderPath = path.resolve(__dirname, 'files');
 
@@ -30,6 +30,18 @@ async function makeDirCopy() {
         makeFileCopy(source, target);
       }
     }
+    // remove old files
+    const copyItems = await readdir(copyFolderName, { withFileTypes: true });
+    const newItemsNames = items.map(item => item.name);
+    for (const copy of copyItems) {
+      const { name } = copy;
+      if (!newItemsNames.includes(name)) {
+        if (copy.isFile()) {
+          rm(path.resolve(copyFolderName, name));
+        }
+      }
+    }
+
   } catch (err) {
     console.log(err);
   }
