@@ -23,3 +23,7 @@ async function mergeStyle(sourcePath, targetPath) {
 const sourcePath = path.resolve(__dirname, 'styles');
 const targetPath = path.resolve(__dirname, 'project-dist', 'bundle.css');
 mergeStyle(sourcePath, targetPath);
+
+module.exports = {
+  mergeStyle,
+}
