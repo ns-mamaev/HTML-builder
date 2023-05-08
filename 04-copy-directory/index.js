@@ -1,8 +1,19 @@
-const { copyFile} = require('fs');
+const { copyFile } = require('fs');
 const path = require('path');
 const { readdir, mkdir, rm } = require('fs/promises');
 
 const folderPath = path.resolve(__dirname, 'files');
+
+async function removeOldItems(itemsNames, distPath) {
+  const copyItems = await readdir(distPath, { withFileTypes: true });
+  for (const copy of copyItems) {
+    const { name } = copy;
+    const itemPath = path.resolve(distPath, name);
+    if (!itemsNames.includes(name)) {
+        await rm(itemPath, { recursive: true });
+    }
+  }
+}
 
 // main function
 async function makeDirCopy(sourcePath, distPath) {
@@ -24,17 +35,8 @@ async function makeDirCopy(sourcePath, distPath) {
       } 
     }
     // remove old files
-    const copyItems = await readdir(distPath, { withFileTypes: true });
-    const newItemsNames = items.map(item => item.name);
-    for (const copy of copyItems) {
-      const { name } = copy;
-      if (!newItemsNames.includes(name)) {
-        if (copy.isFile()) {
-          await rm(path.resolve(distPath, name));
-        }
-      }
-    }
-
+    const itemsNames = items.map(item => item.name);
+    removeOldItems(itemsNames, distPath);
   } catch (err) {
     console.log(err);
   }

@@ -4,7 +4,7 @@ const { readdir } = require('fs/promises');
 
 const folderPath = path.resolve(__dirname, 'secret-folder');
 
-(async function () {
+async function showStats() {
   try {
     const items = await readdir(folderPath, { withFileTypes: true });
     for (const item of items) {
@@ -23,4 +23,6 @@ const folderPath = path.resolve(__dirname, 'secret-folder');
   } catch (err) {
     console.log(err);
   }
-})();
+};
+
+showStats();

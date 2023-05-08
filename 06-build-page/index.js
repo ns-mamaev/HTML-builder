@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const { makeDirCopy } = require('../04-copy-directory');
-const { mergeStyle } = require('../05-merge-styles');
+const { makeDirCopy } = require('../04-copy-directory'); // импортируется модуль из 4 задания
+const { mergeStyle } = require('../05-merge-styles'); // импортируется модуль из 5 задания
 
 function buildHtml() {
   fs.writeFile(path.join(__dirname, 'project-dist', 'index.html'), '', (err) => {
