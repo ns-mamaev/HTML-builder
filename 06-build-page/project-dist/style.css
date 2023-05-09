@@ -1,3 +1,21 @@
+.about-container {
+  padding-top: 100px;
+  padding-bottom: 100px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  text-align: center;
+
+  background-color: black;
+  color: whitesmoke;
+}
+
+.about-text {
+  width: 70%;
+}
 footer {
   background-color: #181617;
 }
@@ -55,24 +73,6 @@ footer .container {
 .telegram a {
   background-image: url('assets/svg/telegram.svg');
   background-size: 26px;
-}
-.about-container {
-  padding-top: 100px;
-  padding-bottom: 100px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  text-align: center;
-
-  background-color: black;
-  color: whitesmoke;
-}
-
-.about-text {
-  width: 70%;
 }
 @font-face {
   font-family: 'Karolina';

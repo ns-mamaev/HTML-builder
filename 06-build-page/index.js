@@ -4,15 +4,13 @@ const { makeDirCopy } = require('../04-copy-directory'); // импортируе
 const { mergeStyle } = require('../05-merge-styles'); // импортируется модуль из 5 задания
 
 function buildHtml() {
-  fs.writeFile(path.join(__dirname, 'project-dist', 'index.html'), '', (err) => {
-    if (err) console.log(err);
-  });
   let mainHtml = '';
   const readStream = fs.createReadStream(path.join(__dirname, 'template.html'), 'utf-8');
   readStream.on('data', (chunk) => (mainHtml += chunk));
   readStream.on('end', () => {
     const componentsNames = mainHtml.match(/{{(.*?)}}/g);
     if (componentsNames.length > 0) {
+      let completeCounter = 0;
       for (let i = 0; i < componentsNames.length; i++) {
         const name = componentsNames[i];
         let componentHtml = '';
@@ -23,8 +21,9 @@ function buildHtml() {
         compReadStream.on('data', (chunk) => (componentHtml += chunk));
         compReadStream.on('end', () => {
           mainHtml = mainHtml.replace(name, componentHtml);
-          if (i === componentsNames.length - 1) {
-            fs.appendFile(
+          completeCounter++;
+          if (completeCounter === componentsNames.length) {
+            fs.writeFile(
               path.resolve(__dirname, 'project-dist', 'index.html'),
               mainHtml,
               (err) => {
