@@ -13,7 +13,8 @@ function buildHtml() {
   readStream.on('end', () => {
     const componentsNames = mainHtml.match(/{{(.*?)}}/g);
     if (componentsNames.length > 0) {
-      for (const name of componentsNames) {
+      for (let i = 0; i < componentsNames.length; i++) {
+        const name = componentsNames[i];
         let componentHtml = '';
         const compReadStream = fs.createReadStream(
           path.resolve(__dirname, 'components', `${name.slice(2, -2)}.html`),
@@ -21,15 +22,16 @@ function buildHtml() {
         );
         compReadStream.on('data', (chunk) => (componentHtml += chunk));
         compReadStream.on('end', () => {
-          const [begin, ...rest] = mainHtml.split(name);
-          mainHtml = rest.join();
-          fs.appendFile(
-            path.resolve(__dirname, 'project-dist', 'index.html'),
-            begin + componentHtml,
-            (err) => {
-              if (err) console.error(err);
-            },
-          );
+          mainHtml = mainHtml.replace(name, componentHtml);
+          if (i === componentsNames.length - 1) {
+            fs.appendFile(
+              path.resolve(__dirname, 'project-dist', 'index.html'),
+              mainHtml,
+              (err) => {
+                if (err) console.error(err);
+              },
+            );
+          }
         });
       }
     }
